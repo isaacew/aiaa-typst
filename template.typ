@@ -1,5 +1,20 @@
+//***************************************************************
+// AIAA TYPST TEMPLATE
+// 
+// The author of this work hereby waives all claim of copyright
+// (economic and moral) in this work and immediately places it 
+// in the public domain; it may be used, distorted or 
+// in any manner whatsoever without further attribution or notice
+// to the creator. The author is not responsible for any liability 
+// from the usage or dissemination of this code.
+//
+// Author: Isaac Weintraub, Alexander Von Moll
+// Date: 06 NOV 2023
+// BAMDONE!
+//***************************************************************
+
 // This function gets your whole document as its `body` and formats
-// it as an article in the style of the IEEE.
+// it as an article in the style of the AIAA.
 
 #let aiaa(
   // The paper's title.
@@ -8,7 +23,7 @@
   // An array of authors. For each author you can specify a name,
   // department, organization, location, and email. Everything but
   // but the name is optional.
-  authors: (),
+  authors-and-affiliations: (),
 
   // The paper's abstract. Can be omitted if you don't have one.
   abstract: none,
@@ -29,7 +44,7 @@
   // Set document metdata.
   set document(
     title: title, 
-    author: authors.map(author => author.name)
+    author: authors-and-affiliations.filter(a => "name" in a).map(a => a.name)
   )
 
   // Set the body font.
@@ -56,7 +71,27 @@
   )
 
   // Configure equation numbering and spacing.
+  set math.equation(numbering: "(1)", supplement: [Eq.])
+  show math.equation: set block(spacing: 0.65em)
 
+  // Configure appearance of equation references
+  show ref: it => {
+    let eq = math.equation
+    let el = it.element
+    if el != none and el.func() == eq {
+      // Override equation references.
+      link(
+        el.label,
+        [#el.supplement #numbering(
+          el.numbering,
+          ..counter(eq).at(el.location())
+        )]
+      )
+    } else {
+      // Other references as usual.
+      it
+    }
+  }
 
   // Configure lists.
   set enum(indent: 10pt, body-indent: 9pt)
@@ -122,81 +157,61 @@
   align(center, text(weight: "bold", 24pt, font: "Times New Roman", title))
   v(8.35mm, weak: true)
 
-  // Display the authors list.
-  for i in range(calc.ceil(authors.len() / 3)) {
-    let end = calc.min((i + 1) * 3, authors.len())
-    let is-last = authors.len() == end
-    let slice = authors.slice(i * 3, end)
-    grid(
-      columns: 1 * (1fr,),
-      gutter: 12pt,
-      ..slice.map(author => align(center, {
-        text(16pt, [author.name #footnote[things]])
-        if "affil" in author [
-          \ #text(12pt, style:"italic", author.affil)
-        ]
-        if "jobTitle" in author [
-          \ #emph(author.jobTitle)
-        ]
-      }))
-    )
-
-    if not is-last {
-      v(16pt, weak: true)
+  // Display the authors and affiliations list.
+  {
+    set align(center)
+    for author-or-affil in authors-and-affiliations {
+      // entry is an author
+      if "name" in author-or-affil {
+        set text(16pt, top-edge:16pt)
+        let author-footer = {
+          if "job" in author-or-affil [#author-or-affil.job]
+          if "department" in author-or-affil [, #author-or-affil.department]
+          if "aiaa" in author-or-affil [, #author-or-affil.aiaa]
+          [.]
+        }
+        [#author-or-affil.name #footnote[#author-footer] ]
+      // the entry is an affiliation
+      } else {  
+          set text(12pt, top-edge: 10pt, style:"italic")
+          [\ #author-or-affil.institution]
+          if "city" in author-or-affil [, #author-or-affil.city]
+          if "state" in author-or-affil [, #author-or-affil.state]
+          if "zip" in author-or-affil [, #author-or-affil.zip]
+          if "country" in author-or-affil [, #author-or-affil.country]
+          [\ ]
+      }
     }
   }
-  v(40pt, weak: true)
+  
+  // Configure Figures
+  show figure.caption: strong
+  set figure.caption(separator:"   ")
+  set figure(numbering: "1", supplement: [Fig.])
 
-  // Start two column mode and configure paragraph properties.
+  // Configure Tables
+  show figure.where(kind: table): {
+    set figure.caption(position: top)
+    set figure(supplement: [Table])
+  }
+
+  // Configure paragraph properties.
   show: columns.with(1, gutter: 0pt)
   set par(justify: true, first-line-indent: 1.5em)
   show par: set block(spacing: 0.65em)
 
   // Display abstract and index terms.
   if abstract != none [
-    #set text(weight: "bold")
-    //_Abstract_---#abstract
-    #table(
-      stroke: none,
-      align: left,
-      gutter: 50pt,
-      columns: (1fr, auto, 1fr),
-      [],[#h(1em) #abstract],[]
-    )
-
-    #if index-terms != () [
-      #h(1em)_Index terms_---#index-terms.join(", ")
-    ]
-    #v(2pt)
-  ]
-
-// Configure equation numbering and spacing.
-  set math.equation(numbering: "(1)", supplement: [Eq.])
-  show math.equation: set block(spacing: 0.65em)
-
-  // Configure appearance of equation references
-  show ref: it => {
-    let eq = math.equation
-    let el = it.element
-    if el != none and el.func() == eq {
-      // Override equation references.
-      link(
-        el.label,
-        [#el.supplement #numbering(
-          el.numbering,
-          ..counter(eq).at(el.location())
-        )]
+    #text(10pt, weight: "bold",
+      table(
+        stroke: none,
+        align: left,
+        gutter: 0pt,
+        columns: (36pt, auto, 36pt),
+        [],[ #h(1.5em) #abstract], []
       )
-    } else {
-      // Other references as usual.
-      it
-    }
-  }
-
-
-
-
-
+    )
+  ]
 
   // Display the paper's contents.
   body
@@ -204,7 +219,7 @@
   // Display bibliography.
   if bibliography-file != none {
     show bibliography: set text(8pt)
-    bibliography(bibliography-file, title: text(10pt)[References], style: "ieee")
+    bibliography(bibliography-file, title: text(10pt)[References], style: "american-institute-of-aeronautics-and-astronautics")
   }
 }
 
@@ -230,4 +245,20 @@
     }
   }
 #it ]
+}
+
+#let nomenclature(..quantities) = {
+  let q = quantities.pos()
+  [= Nomenclature
+
+  #table(
+    stroke: none,
+    row-gutter: -3pt,
+    columns: (auto, auto, auto),
+    align: left,
+    ..q.map(
+      ((k,v)) => ([#k], [$=$], v)
+    ).flatten()
+  )
+  ] 
 }
