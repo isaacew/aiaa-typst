@@ -8,77 +8,87 @@
 // to the creator. The author is not responsible for any liability 
 // from the usage or dissemination of this code.
 //
-// Author: Isaac Weintraub (06 NOV 2023) 
+// Author: Isaac Weintraub, Alexander Von Moll
+// Date: 06 NOV 2023
 // BAMDONE!
-
+//***************************************************************
 
 #import "template.typ": *
 #show: aiaa.with(
-    title: "Preperation of Papers for AIAA Technical Conferences",
+    title: "Preparation of Papers for AIAA Technical Conferences",
+    bibliography-file: "refs.bib",
+    authors-and-affiliations: (
+      (
+        name:"First A. Author",
+        job:"Insert Job Title",
+        department:"Department Name",
+        aiaa:"and AIAA Member Grade (if any) for first author"
+      ),
+      (
+        name:"Second B. Author Jr.",
+        job:"Insert Job Title",
+        department:"Department Name",
+        aiaa:"and AIAA Member Grade (if any) for second author"
+      ),
+      (
+        institution:"Business or Academic Affiliation's Full Name 1",
+        city:"City",
+        state:"State",
+        zip:"Zip Code",
+        country:"Country"
+      ),
+      (
+        name:"Third C. Author",
+        job:"Insert Job Title",
+        department:"Department Name",
+        aiaa:"and AIAA grade (if any) for third author"
+      ),
+      (
+        institution:"Business or Academic Affiliation's Full Name 2",
+        city:"City",
+        state:"State",
+        zip:"Zip Code",
+        country:"Country"
+      ),
+      (
+        name:"Fourth D. Author",
+        job:"Insert Job Title",
+        department:"Department Name",
+        aiaa:"and AIAA grade (if any) for fourth author"
+      ),
+      (
+        institution:"Business or Academic Affiliation's Full Name 3",
+        city:"City",
+        state:"State",
+        zip:"Zip Code",
+        country:"Country"
+      )
+    ),
+    abstract: [These instructions give you guidelines for preparing papers for AIAA Technical Papers. Use this document as a template if you are using Typst. Otherwise, use this document as an instruction set. Define all symbols used in the abstract. Do not cite references in the abstract. The footnote on the first page should list the Job Title and AIAA Member Grade for each author, if known. Authors do not have to be AIAA members.]
 )
 
-#align(center)[
-  #text(16pt, top-edge: 16pt,
-    [First A. Author #footnote[Insert Job Title, Department Name, and AIAA Member Grade (if any) for first author.] Second B. Author Jr.#footnote[Insert Job Title, Department Name, and AIAA Member Grade (if any) for second author.]]
-  ) \
-  #text(12pt, top-edge: 10pt, style:"italic", [Business or Academic Affiliation’s Full Name 1, City, State, Zip Code, Country])
-]
-
-#align(center)[
-  #text(16pt, top-edge: 16pt,
-  [Third C. Author #footnote[Insert Job Title, Department Name, and AIAA Member Grade (if any) for third author.]]
-  ) \
-  #text(12pt, top-edge: 10pt, style:"italic", [Business or Academic Affiliation’s Full Name 2, City, State, Zip Code, Country])
-]
-
-#align(center)[
-  #text(16pt, top-edge: 16pt,
-  [Fourth D. Author #footnote[Insert Job Title, Department Name, and AIAA Member Grade (if any) for third author.]]
-  ) \
-  #text(12pt, top-edge: 10pt, style:"italic", [Business or Academic Affiliation’s Full Name 3, City, State, Zip Code, Country])
-]
-
-#text(10pt, weight: "bold",
-table(
-      stroke: none,
-      align: left,
-      gutter: 0pt,
-      columns: (36pt, auto, 36pt),
-      [],[ #h(1.5em) These instructions give you guidelines for preparing papers for AIAA Technical Papers. Use this document as a template if you are using Typst. Otherwise, use this document as an instruction set. Define all symbols used in the abstract. Do not cite references in the abstract. The footnote on the first page should list the Job Title and AIAA Member Grade for each author, if known. Authors do not have to be AIAA members.],
-      []
-    )
-)
-
-
-
-= Nomenclature
-
-#table(
-	stroke: none,
-	row-gutter: -3pt,
-	columns: (auto, auto, auto),
-	align: left,
-	$A$, $=$, [amplitude of oscillation],
-	$a$, $=$, [cylinder diameter],
-	$C_p$,	$=$,	[pressure coefficient],
-	$C x$,	$=$,	[force coefficient in the x direction],
-	$C y$,	$=$,	[force coefficient in the y direction],
-	$c$,	$=$,	[chord],
-	$d t$, $=$, [time stamp],
-	$F x$, $=$, [$X$ component of the resultant pressure force acting on the vehicle],
-	$F y$, $=$, [$Y$ component of the resultant pressure force acting on the vehicle],
-	$f, g$,	$=$, [generic functions],
-	$h$, $=$, [height],
-	$i$,	$=$,	[time index during navigation],
-	$j$,	$=$,	[waypoint index],
-	$K$,	$=$,	[trailing-edge (TE) nondimensional angular deflection rate],
+#nomenclature(
+  ([$A$], [amplitude of oscillation]),
+  ([$a$], [cylinder diameter]),
+  ($C_p$, "coefficient of pressure"),
+  ($C_x$, "force coefficient in the x direction"),
+  ($C_y$, "force coefficient in the y direction"),
+  ($c$, "chord"),
+  ($d t$, "time stamp"),
+  ($F_x$, [$X$ component of the resultant pressure force acting on the vehicle]),
+  ($F_y$, [$Y$ component of the resultant pressure force acting on the vehicle]),
+  ($f, g$, "generic functions"),
+  ($h$, "height"),
+  ($i$, "time index during navigation"),
+  ($j$, "waypoint index"),
+  ($K$, "trailing-edge (TE) nondimensional angular deflection rate")
 )
 
 = Introduction
 
-#par(first-line-indent: 0em, [This document is a template for Typst. If you are reading a hard-copy or .pdf version of this document, download the  AIAA Meeting Papers Template from the Meeting Paper Author page at www.aiaa.org or from the Technical Presenter Resources page for the appropriate AIAA forum, and use it to prepare your manuscript.])
+#par(first-line-indent: 0em)[This document is a template for Typst. If you are reading a hard-copy or .pdf version of this document, download the  AIAA Meeting Papers Template from the Meeting Paper Author page at www.aiaa.org or from the Technical Presenter Resources page for the appropriate AIAA forum, and use it to prepare your manuscript.]
 
-Authors using Microsoft Word will first need to save the AIAA Meeting PapersTemplate.dotx file in the “Templates” directory of their hard drive. To do so, simply open the AIAA Meeting Papers Template.dotx file and then click “File>Save As:” to save the template. \[Note: Windows users will need to indicate “Save as Type>Document 
+Authors using Microsoft Word will first need to save the AIAA Meeting PapersTemplate.dotx file in the “Templates” directory of their hard drive. To do so, simply open the AIAA Meeting Papers Template.dotx file and then click “File>Save As:” to save the template. \[Note: Windows users will need to indicate “Save as Type>Document\]
 
 Authors using Microsoft Word will first need to save the AIAA Meeting PapersTemplate.dotx file in the “Templates” directory of their hard drive. To do so, simply open the AIAA Meeting Papers Template.dotx file and then click “File>Save As:” to save the template. [Note: Windows users will need to indicate “Save as Type>Document Template (\*.dot)” when asked in the dialogue box; Mac users should save the file in the “My Templates” directory.] To create a new document using this template, use the command “File>New>From Template” (Windows) or “File>Project Gallery>My Templates” (Mac). To create your formatted manuscript, type your own text over sections of the Template, or cut and paste from another document and then use the available markup styles. Note that special formatting such as subscripts, superscripts, and italics may be lost when you copy your text into the template. See Section V for more detailed formatting guidelines.
 
@@ -164,9 +174,9 @@ Do not insert your tables and figures in text boxes. Figures should have no back
 #figure(
   image("Picture1.png", width:50%),
   caption: [
-		Magnetization as a function of applied fields.
+    Magnetization as a function of applied fields.
   ],
-)
+) <a-figure>
 
 Place figure captions below all figures; place table titles above the tables. If your figure has multiple parts, include the labels “a),” “b),” etc. below and to the left of each part, above the figure caption. Please verify that the figures and tables you mention in the text actually exist. Please do not include captions as part of the figures, and do not put captions in separate text boxes linked to the figures. When citing a figure in the text, use the abbreviation “Fig.” except at the beginning of a sentence. Do not abbreviate “Table.” Number each different type of illustration (i.e., figures, tables, images) sequentially with relation to other illustrations of the same type.
 
@@ -208,6 +218,4 @@ An appendix, if needed, should appear before the acknowledgments.
 An Acknowledgments section, if used, immediately precedes the References. Sponsorship information and funding data are included here. The preferred spelling of the word “acknowledgment” in American English is without the “e” after the “g.” Avoid expressions such as “One of us (S.B.A.) would like to thank…” Instead, write “F. A. Author thanks…” 
 
 = References
-The following pages are intended to provide examples of the different reference types. All references should be in 9-point font, with the first line flush left and reference numbers inserted in brackets. You are not required to indicate the type of reference; different types are shown here for illustrative purposes only. The DOI (digital object identifier) should be incorporated in every reference for which it is available (see Ref. 1 sample); for more information on DOIs, visit www.doi.org or www.crossref.org. #cite("example","Vatistas1986","tolkien54")
-
-#bibliography("refs.bib", style: "ieee")
+The following pages are intended to provide examples of the different reference types. All references should be in 9-point font, with the first line flush left and reference numbers inserted in brackets. You are not required to indicate the type of reference; different types are shown here for illustrative purposes only. The DOI (digital object identifier) should be incorporated in every reference for which it is available (see Ref. 1 sample); for more information on DOIs, visit www.doi.org or www.crossref.org. @example @Vatistas1986 @tolkien54
