@@ -6,7 +6,7 @@ This code repository contains a template and sample for authors interested in pu
 ## Description
 
 This repository contains multiple .typ files:
-+ dropcap.typ  - This is a package that performs the dropcap it is authored by [EpicEricEE](www.github.com/EpicEricEE/typst-plugins/dropcap/) 
++ dropcap.typ  - This is a package that performs the dropcap it is authored by [EpicEricEE](https://github.com/EpicEricEE/typst-plugins)
 + main.typ     - This is the main file that is used to type your conference paper. Feel free to make any changes here.
 + template.typ - This is the supporting template file that provides the formatting for the template.
 
