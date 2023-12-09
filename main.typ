@@ -86,7 +86,12 @@
 
 = Introduction
 
-#par(first-line-indent: 0em)[This document is a template for Typst. If you are reading a hard-copy or .pdf version of this document, download the  AIAA Meeting Papers Template from the Meeting Paper Author page at www.aiaa.org or from the Technical Presenter Resources page for the appropriate AIAA forum, and use it to prepare your manuscript.]
+#dropcap(
+  height: 2,
+  gutter: 1pt,
+  hanging-indent: 0em,
+  justify: true,
+)[T #smallcaps([his]) document is a template for Typst. If you are reading a hard-copy or .pdf version of this document, download the  AIAA Meeting Papers Template from the Meeting Paper Author page at www.aiaa.org or from the Technical Presenter Resources page for the appropriate AIAA forum, and use it to prepare your manuscript.]
 
 Authors using Microsoft Word will first need to save the AIAA Meeting PapersTemplate.dotx file in the “Templates” directory of their hard drive. To do so, simply open the AIAA Meeting Papers Template.dotx file and then click “File>Save As:” to save the template. \[Note: Windows users will need to indicate “Save as Type>Document\]
 
