@@ -16,6 +16,8 @@
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the AIAA.
 
+#import "dropcap.typ": dropcap // Needed for the Dropcap in the template.
+
 #let aiaa(
   // The paper's title.
   title: (),
