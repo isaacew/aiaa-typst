@@ -190,10 +190,8 @@
   set figure(numbering: "1", supplement: [Fig.])
 
   // Configure Tables
-  show figure.where(kind: table): {
-    set figure.caption(position: top)
-    set figure(supplement: [Table])
-  }
+  show figure.where(kind: table): set figure.caption(position: top)
+  show figure.where(kind: table): set figure(supplement: [Table]
 
   // Configure paragraph properties.
   show: columns.with(1, gutter: 0pt)
@@ -218,7 +216,7 @@
 
   // Display bibliography.
   if bibliography-file != none {
-    show bibliography: set text(8pt)
+    show bibliography: set text(9pt)
     bibliography(bibliography-file, title: text(10pt)[References], style: "american-institute-of-aeronautics-and-astronautics")
   }
 }
