@@ -191,7 +191,7 @@
 
   // Configure Tables
   show figure.where(kind: table): set figure.caption(position: top)
-  show figure.where(kind: table): set figure(supplement: [Table]
+  show figure.where(kind: table): set figure(supplement: [Table])
 
   // Configure paragraph properties.
   show: columns.with(1, gutter: 0pt)
