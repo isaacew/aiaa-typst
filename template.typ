@@ -9,7 +9,7 @@
 // from the usage or dissemination of this code.
 //
 // Author: Isaac Weintraub, Alexander Von Moll
-// Date: 06 NOV 2023
+// Date: 03 DEC 2024
 // BAMDONE!
 //***************************************************************
 
@@ -102,9 +102,9 @@
   set heading(
     numbering: "I.A.1."
     )
-  show heading: it => locate(loc => {
+  show heading: it => {
     // Find out the final number of the heading counter.
-    let levels = counter(heading).at(loc)
+    let levels = counter(heading).get()
     let deepest = if levels != () {
       levels.last()
     } else {
@@ -150,7 +150,7 @@
       }
       _#(it.body):_
     ]
-  })
+  }
 
   // Display the paper's title.
   v(3pt, weak: true)
@@ -195,8 +195,7 @@
 
   // Configure paragraph properties.
   show: columns.with(1, gutter: 0pt)
-  set par(justify: true, first-line-indent: 1.5em)
-  show par: set block(spacing: 0.65em)
+  set par(justify: true, first-line-indent: 1.5em, spacing: 0.65em)
 
   // Display abstract and index terms.
   if abstract != none [
@@ -459,90 +458,3 @@
   return (none, body)
 }
 
-// Shows the first letter of the given content in a larger font.
-//
-// The first letter is extracted from the content, and the content is split, so
-// that the content is wrapped around the first letter.
-//
-// Parameters:
-// - height: The height of the first letter. Can be given as the number of
-//           lines (integer) or as a length.
-// - justify: Whether to justify the text next to the first letter.
-// - hanging-indent: The indent of lines after the first line.
-// - gutter: The space between the first letter and the text.
-// - transform: A function to be applied to the first letter.
-// - text-args: Arguments to be passed to the underlying text element.
-// - body: The content to be shown.
-//
-// Returns: The content with the first letter shown in a larger font.
-#let dropcap(
-  height: 2,
-  justify: false,
-  hanging-indent: 8pt,
-  gutter: 0pt,
-  transform: none,
-  ..text-args,
-  body
-) = layout(bounds => style(styles => {  
-  // Split body into first letter and rest of string
-  let (letter, rest) = extract-first-letter(body)
-  if transform != none {
-    letter = transform(letter)
-  }
-
-  // Sample content for height of given amount of lines
-  let letter-height = if type(height) == int {
-    let sample-lines = range(height).map(_ => [x]).join(linebreak())
-    measure(sample-lines, styles).height
-  } else {
-    measure(v(height), styles).height
-  }
-
-  // Create dropcap with the height of sample content
-  let letter = sized(letter-height, letter, ..text-args)
-  let letter-width = measure(letter, styles).width
-
-  // Try to justify as many words as possible next to dropcap
-  let bounded = box.with(width: bounds.width - letter-width - gutter)
-
-  let index = 1
-  let (first, second) = while true {
-    let (first, second) = split(rest, index)
-    let first = {
-      set par(hanging-indent: hanging-indent, justify: justify)
-      first
-    }
-
-    if second == none {
-      // All content fits next to dropcap.
-      (first, none)
-      break
-    }
-
-    // Allow a bit more space to accommodate for larger elements.
-    let max-height = letter-height + measure([x], styles).height / 2
-    let height = measure(bounded(first), styles).height    
-    if height > max-height {
-      split(rest, index - 1)
-      break
-    }
-
-    index += 1
-  }
-
-  // Layout dropcap and aside text as grid
-  set par(justify: justify)
-  
-  box(grid(
-    column-gutter: gutter,
-    columns: (letter-width, 1fr),
-    letter,
-    {
-      set par(hanging-indent: hanging-indent)
-      first
-      if second != none { linebreak(justify: justify) }
-    }
-  ))
-  
-  second
-}))

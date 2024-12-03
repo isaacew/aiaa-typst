@@ -9,11 +9,13 @@
 // from the usage or dissemination of this code.
 //
 // Author: Isaac Weintraub, Alexander Von Moll
-// Date: 06 NOV 2023
+// Date: 03 DEC 2024
 // BAMDONE!
 //***************************************************************
 
 #import "template.typ": *
+#import "@preview/droplet:0.3.1": dropcap
+
 #show: aiaa.with(
     title: "Preparation of Papers for AIAA Technical Conferences",
     bibliography-file: "refs.bib",
@@ -88,7 +90,6 @@
 
 #dropcap(
   height: 2,
-  gutter: 1pt,
   hanging-indent: 0em,
   justify: true,
 )[T #smallcaps([his]) document is a template for Typst. If you are reading a hard-copy or .pdf version of this document, download the  AIAA Meeting Papers Template from the Meeting Paper Author page at www.aiaa.org or from the Technical Presenter Resources page for the appropriate AIAA forum, and use it to prepare your manuscript.]
