@@ -1,70 +1,61 @@
-# AIAA-Typst
+# bamdone-aiaa
+This is a Typst template for a one-column paper from the proceedings of the American Institute of Aeronautics and Astronautics. The paper is tightly spaced, fits a lot of content and comes preconfigured for numeric citations from
+BibLaTeX or Hayagriva files.
 
-This code repository contains a template and sample for authors interested in publishing conference papers for the American Institute of Aeronautics and Astronautics. It is based off of the template available from the AIAA webpage.
-[AIAA Technical Presenter Resources Webpage](https://www.aiaa.org/events-learning/events/Technical-Presenter-Resources)
+## Usage
+You can use this template in the Typst web app by clicking "Start from template"
+on the dashboard and searching for `bamdone-aiaa`.
 
-## Description
-
-This repository contains multiple .typ files:
-+ dropcap.typ  - This is a package that performs the dropcap it is authored by [EpicEricEE](https://github.com/EpicEricEE/typst-plugins)
-+ main.typ     - This is the main file that is used to type your conference paper. Feel free to make any changes here.
-+ template.typ - This is the supporting template file that provides the formatting for the template.
-
-## Getting Started
-
-Clone the repository using the clone button in the top right corner. You can download as a zip if you don't know how to clone and fork repos.
-
-### Dependencies
-
-* You will need to have [Typst](www.typst.app) installed.
-
-### Installing
-
-For mac users, I suggest opening a terminal and typing the command `brew install typst`. This will install Typst and add it to your path variables.
-Once Typst is installed, navigate to the folder containing all the files from this repository in a terminal and type the command: `typst w main.typ`. This will compile the code and produce the pdf. As you make changes to the main.typ file, typst will continue to compile and update the pdf. Use command C to halt the terminal process when done. 
-
-### Executing program
-
-Once Typst is installed, navigate to the folder containing all the files from this repository in a terminal and type the command: 
-
+Alternatively, you can use the CLI to kick this project off using the command
 ```
-typst w main.typ
+typst init @preview/bamdone-aiaa
 ```
 
-This will compile the code and produce the pdf. As you make changes to the main.typ file, typst will continue to compile and update the pdf. Use command C to halt the terminal process when done. 
+Typst will create a new directory with all the files needed to get you started.
 
+## Configuration
+This template exports the `aiaa` function with the following named arguments:
 
-## Authors
+- `title`: The paper's title as content.
+- `authors-and-affiliations`: An array of author dictionaries and affiliation dictionaries. 
+  Author dictionaries must have a `name` key and can have the keys `job`, `department`, `aiaa` is optional. Affiliation dictionaries must have the keys `institution`,`city`,`state`,`zip`, and `country`.
+- `abstract`: The content of a brief summary of the paper or `none`. Appears at the top of the first column in boldface. Shall be `content`.
+- `paper-size`: Defaults to `us-letter`. Specify a [paper size string](https://typst.app/docs/reference/layout/page/#parameters-paper) to change the page format.
+- `bibliography`: The result of a call to the `bibliography` function or `none`.
+  Specifying this will configure numeric, AIAA-style citations.
 
-Contributors names and contact info
+The function also accepts a single, positional argument for the body of the
+paper.
 
-Isaac Weintraub, Alexander Von Moll
-The Dropcap project was coppied from EpicEricEE on Github.
+The template will initialize your package with a sample call to the `aiaa`
+function in a show rule. If you want to change an existing project to use this
+template, you can add a show rule like this at the top of your file:
 
-## Version History
+```typ
+#import "@preview/bamdone-aiaa:0.1.2": aiaa
 
-* 1.0 - The AIAA Template with Dropcap and sample bilibiography
+#show: aiaa.with(
+  title: [A typesetting system to untangle the scientific writing process],
+  abstract: [
+    These instructions give you guidelines for preparing papers for AIAA Technical Papers. Use this document as a template if you are using Typst. Otherwise, use this document as an instruction set. Define all symbols used in the abstract. Do not cite references in the abstract. The footnote on the first page should list the Job Title and AIAA Member Grade for each author, if known. Authors do not have to be AIAA members.
+  ],
+  authors: (
+      (
+        name:"First A. Author",
+        job:"Insert Job Title",
+        department:"Department Name",
+        aiaa:"and AIAA Member Grade (if any) for first author"
+      ),
+      (
+        institution:"Business or Academic Affiliation's Full Name 1",
+        city:"City",
+        state:"State",
+        zip:"Zip Code",
+        country:"Country"
+      ),
+  ),
+  bibliography: bibliography("refs.bib"),
+)
 
-## License
-
-MIT License
-
-Copyright (c) 2023 Isaac Weintraub
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+// Your content goes below.
+```
