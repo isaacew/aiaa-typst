@@ -34,8 +34,7 @@
   // The article's paper size. Also affects the margins.
   paper-size: "us-letter",
 
-  // The path to a bibliography file if you want to cite some external
-  // works.
+  // A call to produce bibliography, e.g., bibliography("refs.bib")
   bibliography: none,
 
   // The paper's content.
@@ -48,15 +47,17 @@
   )
 
   // Set the body font.
+  let font = "TeX Gyre Termes"
   set text(
-    font: "Times New Roman",
-    top-edge: 5pt,
+    font: font,
+    size: 10pt,
   )
 
 
   // Configure the page.
   set page(
     paper: paper-size,
+    numbering: "1",
 
     // The margins depend on the paper size.
     margin: if paper-size == "a4" {
@@ -111,7 +112,7 @@
       1
     }
  
-    set text(11pt, weight: "bold", font: "Times New Roman")
+    set text(11pt, weight: "bold", font: font)
     
     if it.level == 1 [
       // First-level headings are centered smallcaps.
@@ -119,7 +120,7 @@
       #let is-ack = it.body in ([Acknowledgment], [Acknowledgement])
       #v(1.65em, weak: true)
       #set align(center)
-      #set text(size: 11pt, weight: "bold", font: "Times New Roman")
+      #set text(size: 11pt, weight: "bold", font: font)
       // #show: smallcaps
       
       // #v(20pt, weak: true)
@@ -154,33 +155,49 @@
 
   // Display the paper's title.
   v(3pt, weak: true)
-  align(center, text(weight: "bold", 24pt, font: "Times New Roman", title))
+  align(center, text(weight: "bold", 18pt, font: font, title))
   v(8.35mm, weak: true)
 
-  // Display the authors and affiliations list.
+// Display the authors and affiliations list.
   {
     set align(center)
-    for author-or-affil in authors-and-affiliations {
+    let affils = ()
+    let groups = ()
+    let group = ()
+    for i in range(authors-and-affiliations.len()) {
+      let author-or-affil = authors-and-affiliations.at(i)
       // entry is an author
       if "name" in author-or-affil {
-        set text(16pt, top-edge:16pt)
         let author-footer = {
           if "job" in author-or-affil [#author-or-affil.job]
           if "department" in author-or-affil [, #author-or-affil.department]
           if "aiaa" in author-or-affil [, #author-or-affil.aiaa]
           [.]
         }
-        [#author-or-affil.name #footnote[#author-footer] ]
+        group.push([#author-or-affil.name #footnote[#author-footer]])
+
       // the entry is an affiliation
       } else {  
-          set text(12pt, top-edge: 10pt, style:"italic")
+        groups.push(group)
+        group = ()
+        // set text(12pt, top-edge: 10pt, style:"italic")
+        affils.push({
           [\ #author-or-affil.institution]
           if "city" in author-or-affil [, #author-or-affil.city]
           if "state" in author-or-affil [, #author-or-affil.state]
           if "zip" in author-or-affil [, #author-or-affil.zip]
           if "country" in author-or-affil [, #author-or-affil.country]
           [\ ]
+        })
       }
+    }
+
+    for i in range(groups.len()) {
+      set text(10pt)
+      block(spacing: 0.65em)[
+        #groups.at(i).join(", ", last: " and ")
+        #emph(affils.at(i))\
+      ]
     }
   }
   
@@ -231,7 +248,7 @@
   // }
 }
 
-#let bEquation = it => { 
+#let b-equation = it => { 
     [#set math.equation(numbering: "(1)", supplement: "Equation")
       #show math.equation: set block(spacing: 0.65em)
       // Configure appearance of equation references
