@@ -197,6 +197,9 @@
   show: columns.with(1, gutter: 0pt)
   set par(justify: true, first-line-indent: 1.5em, spacing: 0.65em)
 
+  // Configure footnote numbering
+  set footnote(numbering: "*")
+
   // Display abstract and index terms.
   if abstract != none [
     #text(10pt, weight: "bold",
